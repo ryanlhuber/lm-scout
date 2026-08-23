@@ -8,38 +8,46 @@ Compare AI models, providers, harnesses, pricing, reasoning levels, and real-wor
 - Svelte 5
 - Vite
 - TypeScript
+- Node.js 22+
+- pnpm
 
 ## Development
 
-Install dependencies:
+LM Scout uses **pnpm** as its canonical package manager. The expected version is declared in `package.json`.
+
+Install pnpm if needed, then install dependencies:
 
 ```sh
-npm install
+pnpm install
 ```
 
 Start the development server:
 
 ```sh
-npm run dev
+pnpm dev
 ```
 
 Run type and Svelte checks:
 
 ```sh
-npm run check
+pnpm check
 ```
 
 Create a production build:
 
 ```sh
-npm run build
+pnpm build
 ```
 
 Preview the production build:
 
 ```sh
-npm run preview
+pnpm preview
 ```
+
+### Other package managers
+
+The project uses standard npm packages and Vite/SvelteKit tooling, so npm, Yarn, or Bun may work for local development. Contributors should use pnpm when changing dependencies so the repository's pnpm lockfile remains authoritative and dependency resolution stays reproducible.
 
 ## License
 
