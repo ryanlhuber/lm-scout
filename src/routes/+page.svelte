@@ -220,10 +220,12 @@
             </select>
           </div>
 
-          <Button class:hidden={!mobileFiltersOpen} class="justify-self-stretch lg:inline-flex" variant="outline">
-            <SlidersHorizontal />
-            More filters
-          </Button>
+          <div class:hidden={!mobileFiltersOpen} class="lg:block">
+            <Button class="w-full lg:w-auto" variant="outline">
+              <SlidersHorizontal />
+              More filters
+            </Button>
+          </div>
         </div>
       </div>
 
@@ -232,7 +234,7 @@
           <Card class="group flex h-full flex-col overflow-hidden shadow-none transition-all hover:-translate-y-0.5 hover:shadow-md">
             <div class="flex items-start justify-between gap-4 border-b p-5 sm:p-6">
               <div class="flex min-w-0 items-start gap-3">
-                <div class="mt-1 size-2.5 shrink-0 rounded-full {model.accent}"></div>
+                <div class={`mt-1 size-2.5 shrink-0 rounded-full ${model.accent}`}></div>
                 <div class="min-w-0">
                   <p class="text-xs font-medium uppercase tracking-[0.14em] text-muted-foreground">{model.vendor}</p>
                   <h3 class="mt-1 truncate text-xl font-semibold tracking-tight">{model.family}</h3>
@@ -315,7 +317,7 @@
               </div>
               <div class="mt-5 grid grid-cols-5 gap-1.5" aria-label="Reasoning effort scale">
                 {#each ['Low', 'Med', 'High', 'Max', 'Ultra'] as level, index}
-                  <button class="h-2 rounded-full {index === 1 ? 'bg-foreground' : 'bg-muted'}" aria-label={level}></button>
+                  <button class={`h-2 rounded-full ${index === 1 ? 'bg-foreground' : 'bg-muted'}`} aria-label={level}></button>
                 {/each}
               </div>
             </div>
