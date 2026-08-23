@@ -12,5 +12,6 @@
     "hooks": "$lib/hooks"
   },
   "typescript": true,
+  "iconLibrary": "lucide",
   "registry": "https://shadcn-svelte.com/registry"
 }
