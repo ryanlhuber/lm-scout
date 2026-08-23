@@ -21,6 +21,8 @@ Install pnpm if needed, then install dependencies:
 pnpm install
 ```
 
+The first install will generate `pnpm-lock.yaml`; commit that file so dependency resolution stays reproducible.
+
 Start the development server:
 
 ```sh
@@ -47,7 +49,7 @@ pnpm preview
 
 ### Other package managers
 
-The project uses standard npm packages and Vite/SvelteKit tooling, so npm, Yarn, or Bun may work for local development. Contributors should use pnpm when changing dependencies so the repository's pnpm lockfile remains authoritative and dependency resolution stays reproducible.
+The project uses standard npm packages and Vite/SvelteKit tooling, so npm, Yarn, or Bun may work for local development. Contributors should use pnpm when changing dependencies so `pnpm-lock.yaml` remains the authoritative lockfile and dependency resolution stays reproducible.
 
 ## License
 
