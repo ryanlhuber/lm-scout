@@ -2,11 +2,9 @@
   import { onMount } from 'svelte';
   import ArrowLeft from '@lucide/svelte/icons/arrow-left';
   import ArrowUpRight from '@lucide/svelte/icons/arrow-up-right';
-  import Braces from '@lucide/svelte/icons/braces';
   import Brain from '@lucide/svelte/icons/brain';
   import Check from '@lucide/svelte/icons/check';
   import Coins from '@lucide/svelte/icons/coins';
-  import Copy from '@lucide/svelte/icons/copy';
   import Gauge from '@lucide/svelte/icons/gauge';
   import Moon from '@lucide/svelte/icons/moon';
   import Sparkles from '@lucide/svelte/icons/sparkles';
@@ -27,6 +25,9 @@
     pricing?: { prompt?: string; completion?: string };
     supported_parameters?: string[];
     reasoning?: { supported_efforts?: string[]; default_effort?: string };
+    catalog_source: { name: string; kind: 'vendor' | 'openrouter' | 'huggingface' | 'ollama'; url: string };
+    fallback_sources: { name: string; kind: 'vendor' | 'openrouter' | 'huggingface' | 'ollama'; url: string }[];
+    research_sources: { name: string; kind: 'benchmark' | 'vendor'; url: string; purpose: string }[];
   };
 
   let { data }: { data: { model: OpenRouterModel; related: OpenRouterModel[]; updatedAt: string } } = $props();
@@ -35,8 +36,10 @@
     openai: 'OpenAI', anthropic: 'Anthropic', microsoft: 'Microsoft', meta: 'Meta', 'meta-llama': 'Meta',
     'x-ai': 'xAI', deepseek: 'DeepSeek', moonshotai: 'Moonshot AI', 'z-ai': 'Z.ai', xiaomi: 'Xiaomi',
     qwen: 'Alibaba', minimax: 'MiniMax', mistralai: 'Mistral', tencent: 'Tencent', nousresearch: 'Nous Research',
-    cursor: 'Cursor', google: 'Google / DeepMind', nvidia: 'NVIDIA', bytedance: 'ByteDance', 'bytedance-seed': 'ByteDance',
-    stepfun: 'StepFun', cohere: 'Cohere', openrouter: 'OpenRouter'
+    cursor: 'Cursor', google: 'Google', nvidia: 'NVIDIA', bytedance: 'ByteDance', 'bytedance-seed': 'ByteDance',
+    stepfun: 'StepFun', cohere: 'Cohere', perplexity: 'Perplexity', amazon: 'Amazon', 'ibm-granite': 'IBM',
+    baidu: 'Baidu', rekaai: 'Reka AI', thinkingmachines: 'Thinking Machines', poolside: 'Poolside', upstage: 'Upstage',
+    sakana: 'Sakana AI', inclusionai: 'InclusionAI', 'aion-labs': 'Aion Labs', openrouter: 'OpenRouter'
   };
 
   const effortOrder = ['none', 'minimal', 'low', 'medium', 'high', 'xhigh', 'max'];
@@ -65,6 +68,13 @@
     const text = `${model.name} ${model.description ?? ''}`.toLowerCase();
     const values = new Set<string>();
     const add = (condition: boolean, label: string) => condition && values.add(label);
+    add(/front.?end|react|vue|svelte|angular|web app|website/.test(text), 'Front-end development');
+    add(/\bui\b|user interface|interface design|screenshot.to.code/.test(text), 'UI design');
+    add(/diagram|flowchart|architecture visual/.test(text), 'Diagramming');
+    add(/ocr|document image|text recognition/.test(text), 'OCR & document extraction');
+    add(/sql|spreadsheet|data analy|analytics/.test(text), 'Data analysis');
+    add(/security|vulnerab|threat|cyber/.test(text), 'Security review');
+    add(/test|debug|code review|refactor/.test(text), 'Code review & debugging');
     add(/embed|retrieval|semantic search/.test(text), 'Semantic search');
     add(/translat|multilingual|language pair/.test(text), 'Translation');
     add(/code|coding|coder|software|developer/.test(text), 'Software development');
@@ -76,6 +86,7 @@
     add(/research|scientific/.test(text), 'Research');
     add(/writ|creative|story|content/.test(text), 'Writing & content');
     add(/math|logic|reasoning/.test(text), 'Complex problem-solving');
+    add(/plan|strategy|long.horizon/.test(text), 'Planning & strategy');
     add(capabilities.includes('Structured Output'), 'Data extraction');
     if (!values.size) values.add('General assistance');
     return [...values].slice(0, 4);
@@ -97,30 +108,14 @@
   const formatModality = (values: string[]) => values.map((value) => value.charAt(0).toUpperCase() + value.slice(1)).join(', ');
   const relatedName = (entry: OpenRouterModel) => entry.name.includes(':') ? entry.name.split(':').slice(1).join(':').trim() : entry.name;
   const detailHref = (id: string) => `/models/${id.split('/').map(encodeURIComponent).join('/')}`;
-  const codeSample = $derived(`const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
-  method: "POST",
-  headers: {
-    "Authorization": "Bearer <OPENROUTER_API_KEY>",
-    "Content-Type": "application/json"
-  },
-  body: JSON.stringify({
-    model: "${model.id}",
-    messages: [{ role: "user", content: "Hello" }]
-  })
-});`);
+  const accessSources = $derived([model.catalog_source, ...model.fallback_sources]);
 
   let theme = $state<'light' | 'dark'>('light');
-  let copied = $state(false);
   const setTheme = (nextTheme: 'light' | 'dark') => {
     theme = nextTheme;
     document.documentElement.classList.toggle('dark', theme === 'dark');
     document.documentElement.style.colorScheme = theme;
     localStorage.setItem('lm-scout-theme', theme);
-  };
-  const copyModelId = async () => {
-    await navigator.clipboard.writeText(model.id);
-    copied = true;
-    window.setTimeout(() => (copied = false), 1600);
   };
 
   onMount(() => {
@@ -171,18 +166,15 @@
             </div>
             <h1 class="mt-5 text-balance text-4xl font-semibold tracking-[-0.035em] sm:text-5xl">{displayName}</h1>
             <p class="mt-5 max-w-3xl text-base leading-7 text-muted-foreground sm:text-lg">
-              {cleanDescription(model.description) || 'This model is currently available through OpenRouter.'}
+              {cleanDescription(model.description) || `This model is currently available from ${model.catalog_source.name}.`}
             </p>
             <div class="mt-6 flex flex-wrap gap-3">
-              <Button variant="outline" onclick={copyModelId}>
-                {#if copied}<Check class="size-4" /> Copied{:else}<Copy class="size-4" /> Copy model ID{/if}
-              </Button>
               <a
-                class="inline-flex h-9 items-center justify-center gap-2 rounded-md bg-primary px-4 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
-                href={`https://openrouter.ai/${model.id}`}
+                class="inline-flex h-9 items-center justify-center gap-2 rounded-md border bg-background px-4 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground"
+                href={model.catalog_source.url}
                 target="_blank"
                 rel="noreferrer"
-              >Open on OpenRouter <ArrowUpRight class="size-4" /></a>
+              >Official model page <ArrowUpRight class="size-4" /></a>
             </div>
           </div>
 
@@ -227,11 +219,39 @@
         </Card>
 
         <Card class="overflow-hidden shadow-none">
-          <div class="flex items-center justify-between border-b px-5 py-4 sm:px-6">
-            <div><h2 class="text-xl font-semibold tracking-tight">API example</h2><p class="mt-1 text-sm text-muted-foreground">OpenRouter chat completions</p></div>
-            <Braces class="size-5 text-muted-foreground" />
+          <div class="border-b px-5 py-4 sm:px-6">
+            <h2 class="text-xl font-semibold tracking-tight">Research sources</h2>
+            <p class="mt-1 text-sm text-muted-foreground">Primary evidence used for ranking, capabilities, and model guidance.</p>
           </div>
-          <pre class="overflow-x-auto bg-muted/35 p-5 text-xs leading-6 sm:p-6"><code>{codeSample}</code></pre>
+          <div class="divide-y">
+            {#each model.research_sources as source, index}
+              <a class="flex items-center justify-between gap-4 px-5 py-4 transition-colors hover:bg-muted/45 sm:px-6" href={source.url} target="_blank" rel="noreferrer">
+                <span class="flex min-w-0 items-center gap-3">
+                  <span class="flex size-7 shrink-0 items-center justify-center rounded-md bg-muted text-xs font-semibold tabular-nums">{index + 1}</span>
+                  <span class="min-w-0"><span class="block text-sm font-medium">{source.name}</span><span class="block text-xs text-muted-foreground">{source.purpose}</span></span>
+                </span>
+                <ArrowUpRight class="size-4 shrink-0 text-muted-foreground" />
+              </a>
+            {/each}
+          </div>
+        </Card>
+
+        <Card class="overflow-hidden shadow-none">
+          <div class="border-b px-5 py-4 sm:px-6">
+            <h2 class="text-xl font-semibold tracking-tight">Access priority</h2>
+            <p class="mt-1 text-sm text-muted-foreground">Where to access the model after reviewing the evidence above.</p>
+          </div>
+          <div class="divide-y">
+            {#each accessSources as source, index}
+              <a class="flex items-center justify-between gap-4 px-5 py-4 transition-colors hover:bg-muted/45 sm:px-6" href={source.url} target="_blank" rel="noreferrer">
+                <span class="flex items-center gap-3">
+                  <span class="flex size-7 items-center justify-center rounded-md bg-muted text-xs font-semibold tabular-nums">{index + 1}</span>
+                  <span><span class="block text-sm font-medium">{source.name}</span><span class="block text-xs text-muted-foreground">{index === 0 ? 'Preferred source' : 'Fallback search'}</span></span>
+                </span>
+                <ArrowUpRight class="size-4 text-muted-foreground" />
+              </a>
+            {/each}
+          </div>
         </Card>
       </div>
 

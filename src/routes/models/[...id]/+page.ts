@@ -3,6 +3,9 @@ import type { PageLoad } from './$types';
 
 type OpenRouterModel = {
   id: string;
+  catalog_source: { name: string; kind: 'vendor' | 'openrouter' | 'huggingface' | 'ollama'; url: string };
+  fallback_sources: { name: string; kind: 'vendor' | 'openrouter' | 'huggingface' | 'ollama'; url: string }[];
+  research_sources: { name: string; kind: 'benchmark' | 'vendor'; url: string; purpose: string }[];
   [key: string]: unknown;
 };
 

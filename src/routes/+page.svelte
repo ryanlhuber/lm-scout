@@ -48,14 +48,17 @@
     pricing?: { prompt?: string; completion?: string };
     supported_parameters?: string[];
     reasoning?: { supported_efforts?: string[]; default_effort?: string };
+    catalog_source?: { name: string; kind: string; url: string };
   };
 
   const providerNames: Record<string, string> = {
     openai: 'OpenAI', anthropic: 'Anthropic', microsoft: 'Microsoft', meta: 'Meta', 'meta-llama': 'Meta',
     'x-ai': 'xAI', deepseek: 'DeepSeek', moonshotai: 'Moonshot AI', 'z-ai': 'Z.ai', xiaomi: 'Xiaomi',
     qwen: 'Alibaba', minimax: 'MiniMax', mistralai: 'Mistral', tencent: 'Tencent', nousresearch: 'Nous Research',
-    cursor: 'Cursor', google: 'Google / DeepMind', nvidia: 'NVIDIA', bytedance: 'ByteDance', 'bytedance-seed': 'ByteDance', stepfun: 'StepFun',
-    cohere: 'Cohere', openrouter: 'OpenRouter'
+    cursor: 'Cursor', google: 'Google', nvidia: 'NVIDIA', bytedance: 'ByteDance', 'bytedance-seed': 'ByteDance', stepfun: 'StepFun',
+    cohere: 'Cohere', perplexity: 'Perplexity', amazon: 'Amazon', 'ibm-granite': 'IBM', baidu: 'Baidu',
+    rekaai: 'Reka AI', thinkingmachines: 'Thinking Machines', poolside: 'Poolside', upstage: 'Upstage',
+    sakana: 'Sakana AI', inclusionai: 'InclusionAI', 'aion-labs': 'Aion Labs', openrouter: 'OpenRouter'
   };
 
   const effortOrder = ['none', 'minimal', 'low', 'medium', 'high', 'xhigh', 'max'];
@@ -91,6 +94,13 @@
     const uses = new Set<string>();
     const add = (condition: boolean, label: string) => condition && uses.add(label);
 
+    add(/front.?end|react|vue|svelte|angular|web app|website/.test(text), 'Front-end development');
+    add(/\bui\b|user interface|interface design|screenshot.to.code/.test(text), 'UI design');
+    add(/diagram|flowchart|architecture visual/.test(text), 'Diagramming');
+    add(/ocr|document image|text recognition/.test(text), 'OCR & document extraction');
+    add(/sql|spreadsheet|data analy|analytics/.test(text), 'Data analysis');
+    add(/security|vulnerab|threat|cyber/.test(text), 'Security review');
+    add(/test|debug|code review|refactor/.test(text), 'Code review & debugging');
     add(/embed|retrieval|semantic search/.test(text), 'Semantic search');
     add(/translat|multilingual|language pair/.test(text), 'Translation');
     add(/code|coding|coder|software|developer/.test(text), 'Software development');
@@ -102,10 +112,11 @@
     add(/research|scientific/.test(text), 'Research');
     add(/writ|creative|story|content/.test(text), 'Writing & content');
     add(/math|logic|reasoning/.test(text), 'Complex problem-solving');
+    add(/plan|strategy|long.horizon/.test(text), 'Planning & strategy');
     add(strengths.includes('Structured Output'), 'Data extraction');
 
     if (!uses.size) uses.add('General assistance');
-    return [...uses].slice(0, 3);
+    return [...uses].slice(0, 4);
   };
 
   const mapModel = (model: OpenRouterModel): ModelCard => {
@@ -123,7 +134,7 @@
       name,
       vendor,
       configuration: (model.architecture?.modality ?? 'text->text').replace('->', ' → ').replaceAll('+', ' + '),
-      summary: cleanDescription(model.description) || 'Available through OpenRouter.',
+      summary: cleanDescription(model.description) || 'Current model metadata is limited.',
       strengths,
       uses: getUses(model, strengths),
       contextLength: model.context_length ?? 0,
@@ -175,14 +186,14 @@
       const payload = await response.json() as { data: OpenRouterModel[] };
       models = payload.data.map(mapModel);
     } catch {
-      loadError = 'The live OpenRouter catalog could not be loaded. Try refreshing in a moment.';
+      loadError = 'The curated model catalog could not be loaded. Try refreshing in a moment.';
     } finally {
       loading = false;
     }
   });
 
   $: vendors = [...new Set(models.map((model) => model.vendor))].sort();
-  $: tasks = [...new Set(models.flatMap((model) => model.strengths))].sort();
+  $: tasks = [...new Set(models.flatMap((model) => model.uses))].sort();
 
   $: comparisonModels = (() => {
     const match = query.trim().match(/^(.+?)\s+(?:vs\.?|versus)\s+(.+)$/i);
@@ -200,11 +211,11 @@
   })();
 
   $: filteredModels = comparisonModels ? [] : models.filter((model) => {
-    const matchesQuery = `${model.name} ${model.vendor} ${model.configuration} ${model.strengths.join(' ')}`
+    const matchesQuery = `${model.name} ${model.vendor} ${model.configuration} ${model.strengths.join(' ')} ${model.uses.join(' ')}`
       .toLowerCase()
       .includes(query.toLowerCase());
     const matchesVendor = selectedVendor === 'All vendors' || model.vendor === selectedVendor;
-    const matchesTask = selectedTask === 'All tasks' || model.strengths.includes(selectedTask);
+    const matchesTask = selectedTask === 'All tasks' || model.uses.includes(selectedTask);
     return matchesQuery && matchesVendor && matchesTask;
   });
 </script>
@@ -267,7 +278,7 @@
               Find the right AI model for the task.
             </h1>
             <p class="mt-5 max-w-2xl text-pretty text-base leading-7 text-muted-foreground sm:text-lg">
-              Browse every currently available OpenRouter model by provider, context window, modality, pricing, tool support, and reasoning controls.
+              Compare leading models using DeepSWE, CursorBench, Artificial Analysis, and official vendor documentation, with platform data used only for availability.
             </p>
           </div>
 
@@ -357,7 +368,7 @@
           <Card class="col-span-full flex min-h-64 items-center justify-center p-8 text-center shadow-none">
             <div>
               <div class="mx-auto size-8 animate-pulse rounded-full bg-muted"></div>
-              <p class="mt-4 text-sm font-medium">Loading the live OpenRouter catalog…</p>
+              <p class="mt-4 text-sm font-medium">Loading the curated model catalog…</p>
             </div>
           </Card>
         {:else if loadError}
