@@ -1,0 +1,258 @@
+/*
+ * Design iteration tokens. Each iteration re-skins the shadcn-svelte tokens
+ * (so shared components like Select follow along) and sets its own type.
+ * The Original iteration uses the defaults in app.css untouched.
+ */
+
+@import '@fontsource/alegreya/400.css';
+@import '@fontsource/alegreya/400-italic.css';
+@import '@fontsource/alegreya/700.css';
+@import '@fontsource/alegreya/700-italic.css';
+@import '@fontsource/alegreya-sans/400.css';
+@import '@fontsource/alegreya-sans/500.css';
+@import '@fontsource/alegreya-sans/700.css';
+@import '@fontsource-variable/archivo/wdth.css';
+@import '@fontsource-variable/bricolage-grotesque/index.css';
+@import '@fontsource-variable/schibsted-grotesk/index.css';
+@import '@fontsource-variable/red-hat-display/index.css';
+@import '@fontsource-variable/red-hat-text/index.css';
+
+/* Field Guide: a naturalist's guide; sage paper, forest ink, moss, marker yellow. */
+:root[data-design='field-guide'] {
+  --lm-font-body: 'Alegreya Sans', ui-sans-serif, sans-serif;
+  --lm-font-display: 'Alegreya', Georgia, serif;
+  --radius: 0.25rem;
+  --lm-marker: #e3c341;
+  --background: #e7ece2;
+  --foreground: #1d2a21;
+  --card: #f1f4ed;
+  --card-foreground: #1d2a21;
+  --popover: #f6f8f3;
+  --popover-foreground: #1d2a21;
+  --primary: #3f5d32;
+  --primary-foreground: #f1f4ed;
+  --secondary: #d9e1d2;
+  --secondary-foreground: #1d2a21;
+  --muted: #dce3d5;
+  --muted-foreground: #4e5e53;
+  --accent: #e9d983;
+  --accent-foreground: #1d2a21;
+  --border: #bfcbb8;
+  --input: #a9b8a1;
+  --ring: #3f5d32;
+}
+:root[data-design='field-guide'].dark {
+  --lm-marker: #d8b93a;
+  --background: #141b16;
+  --foreground: #dce4d6;
+  --card: #1b241e;
+  --card-foreground: #dce4d6;
+  --popover: #202b23;
+  --popover-foreground: #dce4d6;
+  --primary: #a9c48f;
+  --primary-foreground: #141b16;
+  --secondary: #26322a;
+  --secondary-foreground: #dce4d6;
+  --muted: #222d25;
+  --muted-foreground: #9aaa9b;
+  --accent: #3d3b1d;
+  --accent-foreground: #f1e7a6;
+  --border: #2f3c33;
+  --input: #3a4a3e;
+  --ring: #a9c48f;
+}
+
+/* Datasheet: an electronics part datasheet; white, navy ink, datasheet blue. */
+:root[data-design='datasheet'] {
+  --lm-font-body: 'Archivo Variable', ui-sans-serif, sans-serif;
+  --lm-font-display: 'Archivo Variable', ui-sans-serif, sans-serif;
+  --radius: 0.125rem;
+  --background: #ffffff;
+  --foreground: #10233f;
+  --card: #ffffff;
+  --card-foreground: #10233f;
+  --popover: #ffffff;
+  --popover-foreground: #10233f;
+  --primary: #2346a0;
+  --primary-foreground: #ffffff;
+  --secondary: #eef2fa;
+  --secondary-foreground: #10233f;
+  --muted: #f2f5fa;
+  --muted-foreground: #4b5b74;
+  --accent: #e3ebfb;
+  --accent-foreground: #10233f;
+  --border: #c9d2e0;
+  --input: #b3bfd3;
+  --ring: #2346a0;
+}
+:root[data-design='datasheet'].dark {
+  --background: #0d1626;
+  --foreground: #e2e8f3;
+  --card: #111c30;
+  --card-foreground: #e2e8f3;
+  --popover: #15223a;
+  --popover-foreground: #e2e8f3;
+  --primary: #86a6f0;
+  --primary-foreground: #0d1626;
+  --secondary: #1a2740;
+  --secondary-foreground: #e2e8f3;
+  --muted: #16233a;
+  --muted-foreground: #9aa8c0;
+  --accent: #1e2e4d;
+  --accent-foreground: #e2e8f3;
+  --border: #26365a;
+  --input: #34477a;
+  --ring: #86a6f0;
+}
+
+/* Stat Cards: collectible stat cards; cobalt table, white cards, sunshine yellow. */
+:root[data-design='stat-cards'] {
+  --lm-font-body: 'Bricolage Grotesque Variable', ui-sans-serif, sans-serif;
+  --lm-font-display: 'Bricolage Grotesque Variable', ui-sans-serif, sans-serif;
+  --radius: 1rem;
+  --lm-ink: #14163a;
+  --lm-sun: #ffd23f;
+  --lm-card-edge: #d9def5;
+  --background: #2442d1;
+  --foreground: #ffffff;
+  --card: #ffffff;
+  --card-foreground: #14163a;
+  --popover: #ffffff;
+  --popover-foreground: #14163a;
+  --primary: #ffd23f;
+  --primary-foreground: #14163a;
+  --secondary: #3453dc;
+  --secondary-foreground: #ffffff;
+  --muted: #eef1fd;
+  --muted-foreground: #4a5079;
+  --accent: #fff0b3;
+  --accent-foreground: #14163a;
+  --border: rgb(255 255 255 / 28%);
+  --input: rgb(255 255 255 / 45%);
+  --ring: #ffd23f;
+}
+:root[data-design='stat-cards'].dark {
+  --lm-ink: #eef1ff;
+  --lm-card-edge: #2c3a80;
+  --background: #0e1640;
+  --foreground: #eef1ff;
+  --card: #1a2458;
+  --card-foreground: #eef1ff;
+  --popover: #1a2458;
+  --popover-foreground: #eef1ff;
+  --primary: #ffd23f;
+  --primary-foreground: #14163a;
+  --secondary: #1e2a66;
+  --secondary-foreground: #eef1ff;
+  --muted: #222e6a;
+  --muted-foreground: #b0bae8;
+  --accent: #2c3a80;
+  --accent-foreground: #ffffff;
+  --border: rgb(255 255 255 / 16%);
+  --input: rgb(255 255 255 / 26%);
+  --ring: #ffd23f;
+}
+
+/* Price Map: chart paper; quiet grays so the plotted models carry the color. */
+:root[data-design='price-map'] {
+  --lm-font-body: 'Schibsted Grotesk Variable', ui-sans-serif, sans-serif;
+  --lm-font-display: 'Schibsted Grotesk Variable', ui-sans-serif, sans-serif;
+  --radius: 0.5rem;
+  --lm-series-1: #2a78d6;
+  --lm-series-2: #eb6834;
+  --lm-series-3: #1baf7a;
+  --background: #f5f6f8;
+  --foreground: #1a1e27;
+  --card: #ffffff;
+  --card-foreground: #1a1e27;
+  --popover: #ffffff;
+  --popover-foreground: #1a1e27;
+  --primary: #1a1e27;
+  --primary-foreground: #f5f6f8;
+  --secondary: #e9ecf1;
+  --secondary-foreground: #1a1e27;
+  --muted: #eceef2;
+  --muted-foreground: #565e70;
+  --accent: #e4e8ef;
+  --accent-foreground: #1a1e27;
+  --border: #d8dce4;
+  --input: #c3c9d4;
+  --ring: #2a78d6;
+}
+:root[data-design='price-map'].dark {
+  --lm-series-1: #3987e5;
+  --lm-series-2: #d95926;
+  --lm-series-3: #199e70;
+  --background: #151820;
+  --foreground: #e7eaf0;
+  --card: #1c2029;
+  --card-foreground: #e7eaf0;
+  --popover: #222733;
+  --popover-foreground: #e7eaf0;
+  --primary: #e7eaf0;
+  --primary-foreground: #151820;
+  --secondary: #262b37;
+  --secondary-foreground: #e7eaf0;
+  --muted: #232834;
+  --muted-foreground: #9ea6b6;
+  --accent: #2b3140;
+  --accent-foreground: #e7eaf0;
+  --border: #2c3240;
+  --input: #3a4254;
+  --ring: #3987e5;
+}
+
+/* Matchmaker: a conversation, not a catalog; lilac, plum ink, marigold. */
+:root[data-design='matchmaker'] {
+  --lm-font-body: 'Red Hat Text Variable', ui-sans-serif, sans-serif;
+  --lm-font-display: 'Red Hat Display Variable', ui-sans-serif, sans-serif;
+  --radius: 0.875rem;
+  --lm-marigold: #f0a62a;
+  --background: #f3f0f7;
+  --foreground: #2b1d3a;
+  --card: #fbfafd;
+  --card-foreground: #2b1d3a;
+  --popover: #ffffff;
+  --popover-foreground: #2b1d3a;
+  --primary: #2b1d3a;
+  --primary-foreground: #f3f0f7;
+  --secondary: #e7e1ef;
+  --secondary-foreground: #2b1d3a;
+  --muted: #eae5f1;
+  --muted-foreground: #66587a;
+  --accent: #f7e3b8;
+  --accent-foreground: #2b1d3a;
+  --border: #dcd3e6;
+  --input: #c9bdd8;
+  --ring: #c98512;
+}
+:root[data-design='matchmaker'].dark {
+  --lm-marigold: #f5b847;
+  --background: #1a1224;
+  --foreground: #ede6f5;
+  --card: #22182f;
+  --card-foreground: #ede6f5;
+  --popover: #2a1f39;
+  --popover-foreground: #ede6f5;
+  --primary: #ede6f5;
+  --primary-foreground: #1a1224;
+  --secondary: #2c2139;
+  --secondary-foreground: #ede6f5;
+  --muted: #281e35;
+  --muted-foreground: #ab9cbe;
+  --accent: #4a3618;
+  --accent-foreground: #f7e3b8;
+  --border: #3a2d4a;
+  --input: #4b3c60;
+  --ring: #f5b847;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root[data-design]:not([data-design='original']) *,
+  :root[data-design]:not([data-design='original']) *::before,
+  :root[data-design]:not([data-design='original']) *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

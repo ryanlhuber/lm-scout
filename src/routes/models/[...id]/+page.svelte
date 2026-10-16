@@ -15,6 +15,7 @@
   import { Button } from '$lib/components/ui/button';
   import { Card } from '$lib/components/ui/card';
   import ProviderLogo from '$lib/components/ProviderLogo.svelte';
+  import DesignSwitcher from '$lib/designs/DesignSwitcher.svelte';
 
   type OpenRouterModel = {
     id: string;
@@ -140,14 +141,17 @@
           <ArrowLeft class="size-4" /> Models
         </a>
       </div>
-      <Button
-        variant="ghost"
-        size="icon"
-        aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} theme`}
-        onclick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-      >
-        {#if theme === 'dark'}<Sun class="size-4" />{:else}<Moon class="size-4" />{/if}
-      </Button>
+      <div class="flex items-center gap-2">
+        <DesignSwitcher class="max-w-40" />
+        <Button
+          variant="ghost"
+          size="icon"
+          aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} theme`}
+          onclick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+        >
+          {#if theme === 'dark'}<Sun class="size-4" />{:else}<Moon class="size-4" />{/if}
+        </Button>
+      </div>
     </div>
   </header>
 
