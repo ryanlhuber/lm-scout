@@ -10,7 +10,7 @@ Directions were planned with Anthropic's frontend-design skill: what LM Scout is
 | --- | --- | --- | --- | --- |
 | `original` | The current interface, unchanged | — | System sans | Neutral shadcn |
 | `field-guide` | A naturalist's field guide: each model is an entry, grouped by family | Italic specimen names under family headings, with a sticky family index | Alegreya, Alegreya Sans | Sage paper, forest ink, moss, marker yellow |
-| `datasheet` | An electronics part datasheet | Features / Applications / Description, then a sortable characteristics table | Archivo (width axis) | White, navy ink, datasheet blue |
+| `hardware` | A pocket instrument, after Teenage Engineering's hardware (OP-1, EP-133, pocket operators) | Four color-coded encoder knobs that filter and sort, a dot-matrix display, and a keypad with one key per model | Inter Tight, Doto (display only) | Aluminum gray, black display, blue/green/white/orange encoders, orange signal |
 | `stat-cards` | Collectible stat cards | Pick two cards and see who wins each of five stats | Bricolage Grotesque | Cobalt, white cards, sunshine yellow |
 | `price-map` | A chart first, list second | Interactive scatter of input price against context window, with the frontier line | Schibsted Grotesk | Quiet chart-paper grays; a validated three-hue series palette |
 | `matchmaker` | A conversation, not a catalog | A fill-in sentence that drives ranked matches | Red Hat Display, Red Hat Text | Lilac, plum ink, marigold |

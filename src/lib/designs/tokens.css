@@ -11,7 +11,8 @@
 @import '@fontsource/alegreya-sans/400.css';
 @import '@fontsource/alegreya-sans/500.css';
 @import '@fontsource/alegreya-sans/700.css';
-@import '@fontsource-variable/archivo/wdth.css';
+@import '@fontsource-variable/doto/index.css';
+@import '@fontsource-variable/inter-tight/index.css';
 @import '@fontsource-variable/bricolage-grotesque/index.css';
 @import '@fontsource-variable/schibsted-grotesk/index.css';
 @import '@fontsource-variable/red-hat-display/index.css';
@@ -62,47 +63,67 @@
   --ring: #a9c48f;
 }
 
-/* Datasheet: an electronics part datasheet; white, navy ink, datasheet blue. */
-:root[data-design='datasheet'] {
-  --lm-font-body: 'Archivo Variable', ui-sans-serif, sans-serif;
-  --lm-font-display: 'Archivo Variable', ui-sans-serif, sans-serif;
-  --radius: 0.125rem;
-  --background: #ffffff;
-  --foreground: #10233f;
-  --card: #ffffff;
-  --card-foreground: #10233f;
-  --popover: #ffffff;
-  --popover-foreground: #10233f;
-  --primary: #2346a0;
-  --primary-foreground: #ffffff;
-  --secondary: #eef2fa;
-  --secondary-foreground: #10233f;
-  --muted: #f2f5fa;
-  --muted-foreground: #4b5b74;
-  --accent: #e3ebfb;
-  --accent-foreground: #10233f;
-  --border: #c9d2e0;
-  --input: #b3bfd3;
-  --ring: #2346a0;
+/* Hardware: a pocket instrument after Teenage Engineering; aluminum, color-coded encoders, black display, orange signal. */
+:root[data-design='hardware'] {
+  --lm-font-body: 'Inter Tight Variable', ui-sans-serif, sans-serif;
+  --lm-font-display: 'Inter Tight Variable', ui-sans-serif, sans-serif;
+  --lm-font-readout: 'Doto Variable', ui-monospace, monospace;
+  --radius: 0.375rem;
+  --lm-body: #d9dadb;
+  --lm-body-edge: #c4c6c8;
+  --lm-key: #f6f6f5;
+  --lm-key-edge: #b9bbbe;
+  --lm-key-dark: #2a2b2e;
+  --lm-screen: #111211;
+  --lm-screen-ink: #f1f1ec;
+  --lm-screen-dim: #6b6d68;
+  --lm-blue: #1f5fe0;
+  --lm-green: #1e9e57;
+  --lm-white: #f5f5f4;
+  --lm-orange: #ff4f12;
+  --background: #eeefef;
+  --foreground: #1b1c1e;
+  --card: #f6f6f5;
+  --card-foreground: #1b1c1e;
+  --popover: #f9f9f8;
+  --popover-foreground: #1b1c1e;
+  --primary: #1b1c1e;
+  --primary-foreground: #f6f6f5;
+  --secondary: #e2e3e4;
+  --secondary-foreground: #1b1c1e;
+  --muted: #e4e5e6;
+  --muted-foreground: #5d6064;
+  --accent: #ffe1d4;
+  --accent-foreground: #1b1c1e;
+  --border: #c9cbcd;
+  --input: #b9bbbe;
+  --ring: #ff4f12;
 }
-:root[data-design='datasheet'].dark {
-  --background: #0d1626;
-  --foreground: #e2e8f3;
-  --card: #111c30;
-  --card-foreground: #e2e8f3;
-  --popover: #15223a;
-  --popover-foreground: #e2e8f3;
-  --primary: #86a6f0;
-  --primary-foreground: #0d1626;
-  --secondary: #1a2740;
-  --secondary-foreground: #e2e8f3;
-  --muted: #16233a;
-  --muted-foreground: #9aa8c0;
-  --accent: #1e2e4d;
-  --accent-foreground: #e2e8f3;
-  --border: #26365a;
-  --input: #34477a;
-  --ring: #86a6f0;
+:root[data-design='hardware'].dark {
+  --lm-body: #1d1e20;
+  --lm-body-edge: #2c2d30;
+  --lm-key: #2b2c2f;
+  --lm-key-edge: #3d3f43;
+  --lm-key-dark: #0c0c0d;
+  --lm-screen: #060606;
+  --lm-white: #d6d6d4;
+  --background: #0f1011;
+  --foreground: #ececea;
+  --card: #1d1e20;
+  --card-foreground: #ececea;
+  --popover: #232427;
+  --popover-foreground: #ececea;
+  --primary: #ececea;
+  --primary-foreground: #0f1011;
+  --secondary: #26272a;
+  --secondary-foreground: #ececea;
+  --muted: #222326;
+  --muted-foreground: #9a9ca1;
+  --accent: #3a2116;
+  --accent-foreground: #ffd2bf;
+  --border: #2e3033;
+  --input: #3d3f43;
+  --ring: #ff6a33;
 }
 
 /* Stat Cards: collectible stat cards; cobalt table, white cards, sunshine yellow. */
